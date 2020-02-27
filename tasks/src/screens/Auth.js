@@ -13,6 +13,7 @@ import commonStyles from '../CommomStyles'
 import AuthInput from '../components/AuthInput'
 import { server, showError, showSuccess } from '../common'
 import axios from 'axios'
+import AsyncStorage from '@react-native-community/async-storage'
 
 
 const initialState = {
@@ -51,8 +52,9 @@ export default class Auth extends Component {
                 password: this.state.password
             })
 
+            AsyncStorage.setItem('userData', JSON.stringify(res.data))
             axios.defaults.headers.common['Authorization'] = `bearer ${res.data.token}`
-            this.props.navigation.navigate('Home')
+            this.props.navigation.navigate('Home', res.data)
         } catch(e) {
             showError(e)
         }

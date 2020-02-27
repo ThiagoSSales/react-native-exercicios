@@ -42,17 +42,18 @@ export default class TaskList extends Component {
             showDoneTasks: savedState.showDoneTasks
         }, this.filterTasks)
 
-        this.loadTasks
+        this.loadTasks()
     }
 
     loadTasks = async () => {
         try {
-            const maxDate = moment().add({ days: this.props.daysAhead })
-                .format('YYYY-MM-DD 23:59:59')
+            const maxDate = moment()
+                .add({ days: this.props.daysAhead })
+                .format('YYYY-MM-DD 23:59')
             const res = await axios.get(`${server}/tasks?date=${maxDate}`)
             this.setState({ tasks: res.data }, this.filterTasks)
-        } catch (e) {
-            showError(e)
+        } catch (err) {
+            showError(err)
         }
     }
 

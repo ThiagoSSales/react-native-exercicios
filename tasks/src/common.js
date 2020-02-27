@@ -4,7 +4,11 @@ const server = Platform.OS === 'ios'
     ? 'http://localhost:3001' : 'http://10.0.2.2:3001';
 
 function showError(err) {
-    Alert.alert('Ops! Um erro ocorreu!', `Mensagem: ${err}` )
+    if(err.response && err.response.data) {
+        Alert.alert('Ops! Um erro ocorreu!', `${err.response.data}` )
+    } else {
+        Alert.alert('Ops! Um erro ocorreu!', `${err}` )
+    }
 }
 
 function showSuccess(msg) {
