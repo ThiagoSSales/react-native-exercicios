@@ -18,7 +18,7 @@ class Login extends Component {
 
     login = () => {
         this.props.onLogin({ ...this.state })
-        this.props.navigations.navigate('Profile')
+        this.props.navigation.navigate('Profile')
     }
 
     render() {

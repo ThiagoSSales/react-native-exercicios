@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { addComment } from '../store/actions/posts'
 import {
     View,
     Text,
@@ -15,8 +17,15 @@ class AddComment extends Component {
         editMode: false
     }
 
-    handAddComment = () => {
-        Alert.alert('Adicionado!', this.state.comment)
+    handleAddComment = () => {
+        this.props.onAddComment({
+            postId: this.props.postId,
+            comment: {
+                nickname: this.props.name,
+                comment: this.state.comment
+            }
+        })
+        this.setState({ comment: '', editMode: false })
     }
 
     render() {
@@ -29,7 +38,7 @@ class AddComment extends Component {
                         style={styles.input}
                         value={this.state.comment}
                         onChangeText={comment => this.setState({ comment })}
-                        onSubmitEditing={this.handAddComment} />
+                        onSubmitEditing={this.handleAddComment} />
 
                     <TWF onPress={() => this.setState({ editMode: false })} >
                         <Icon name='times' size={15} color='#555' />
@@ -79,4 +88,16 @@ const styles = StyleSheet.create({
     }
 });
 
-export default AddComment
+const mapStateToProps = ({ user }) => {
+    return {
+        name: user.name
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onAddComment: payload => dispatch(addComment(payload))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddComment)

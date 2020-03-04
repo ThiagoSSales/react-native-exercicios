@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import {
     View,
     StyleSheet,
@@ -8,40 +9,13 @@ import Header from '../components/Header'
 import Post from '../components/Post'
 
 class Feed extends Component {
-    state = {
-        posts: [{
-            id: Math.random(),
-            nickname: 'Nick Teste 1',
-            email: 'nick1@email.com',
-            image: require('../../assets/imgs/fence.jpg'),
-            comments: [{
-                nickname: 'Nick Teste 2',
-                comment: 'Comment 1'
-            }, {
-                nickname: 'Nick Teste 3',
-                comment: 'Comment 2'
-            }] 
-        }, {
-            id: Math.random(),
-            nickname: 'Nick Teste 4',
-            email: 'nick4@email.com',
-            image: require('../../assets/imgs/bw.jpg'),
-            comments: [{
-                nickname: 'Nick Teste 1',
-                comment: 'Comment 3'
-            }, {
-                nickname: 'Nick Teste 3',
-                comment: 'Comment 4'
-            }] 
-        }]
-    }
 
     render() {
         return ( 
             <View style={styles.container}>
                 <Header />
                 <FlatList
-                    data={this.state.posts}
+                    data={this.props.posts}
                     keyExtractor={item => `${item.id}`} 
                     renderItem={({ item }) => 
                         <Post key={item.id} {...item} />}
@@ -60,4 +34,10 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Feed
+const mapStateToProps = ({ posts }) => {
+    return {
+        posts: posts.posts
+    }
+}
+
+export default connect(mapStateToProps)(Feed)
